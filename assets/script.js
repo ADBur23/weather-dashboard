@@ -1,5 +1,6 @@
 // API Key
 const apiKey = "&appid=b48d833200fd293d9f5e206ca699d94b";
+
 // Sets the search city
 var cityName = "";
 
@@ -12,28 +13,41 @@ function recordCityData() {
 }
 
 // Current Weather URL
-const currentWeather =
-  "https://api.openweathermap.org/data/2.5/weather?q=" +
-  cityName +
-  "&units=metric" +
-  apiKey;
+// let currentWeather =
+//   "https://api.openweathermap.org/data/2.5/weather?q=" +
+//   cityName +
+//   "&units=metric" +
+//   apiKey;
 
 // 5 day Forcast URL
-const forcastURL =
+let forcastURL =
   "api.openweathermap.org/data/2.5/forecast?q=" +
   cityName +
   "&units=metric" +
   apiKey;
 
-// Displays the date
-var currentDay = dayjs().format("dddd, MMMM Do");
+var getCurrentConditions = (event) => {
+  // Obtain city name from the search box
+  cityName = $("#search-input").val();
+  let currentWeather =
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
+    cityName +
+    "&units=metric" +
+    apiKey;
+  fetch(currentWeather)
+    .then((response) => {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+    });
+  //   .then((response) => {
+  // }
+};
 
-// fetch(
-//   "https://api.openweathermap.org/data/2.5/forecast?        q=london&appid=[api-key]&units=metric"
-// )
-//   .then(function (response) {
-//     return response.json();
-//   })
-//   .then(function (data) {
-//     console.log(data);
-//   });
+// New city search button event listener
+$("#search-button").on("click", (event) => {
+  event.preventDefault();
+  cityName = $("#search-input").val();
+  getCurrentConditions(event);
+});
